@@ -4,22 +4,23 @@
 #include <iostream>
 #include <string>
 
-class Card()
+class Card
 {
 public:
 	Card(char suit, std::string rank);
 	char getSuit() const;
 	int getValue() const;
+	void setValue(int value);
 	std::string getRank() const;
-	std::string displayCard() const;
 	bool isFaceCard() const;
 	bool isDrawn() const;
+	void setDrawn(bool drawn);
 
 private:
 	char suit;
 	int value;
 	std::string rank;
-	bool isDrawn;
-}
+	bool drawn;
+};
 
 #endif
