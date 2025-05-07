@@ -1,6 +1,6 @@
 #include "Card.hpp"
 
-Card::Card(char suit, std::string rank) : suit(suit), rank(rank), drawn(false)
+Card::Card(std::string suit, std::string rank) : suit(suit), rank(rank), drawn(false)
 {
 	if (rank == "Ace") {
 		value = 11;
@@ -13,7 +13,7 @@ Card::Card(char suit, std::string rank) : suit(suit), rank(rank), drawn(false)
 	}
 }
 
-char Card::getSuit() const
+std::string Card::getSuit() const
 {
 	return suit;
 }

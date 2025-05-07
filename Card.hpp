@@ -7,8 +7,8 @@
 class Card
 {
 public:
-	Card(char suit, std::string rank);
-	char getSuit() const;
+	Card(std::string suit, std::string rank);
+	std::string getSuit() const;
 	int getValue() const;
 	void setValue(int value);
 	std::string getRank() const;
@@ -17,7 +17,7 @@ public:
 	void setDrawn(bool drawn);
 
 private:
-	char suit;
+	std::string suit;
 	int value;
 	std::string rank;
 	bool drawn;
