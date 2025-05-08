@@ -1,6 +1,7 @@
 #include "Card.hpp"
 
-Card::Card(std::string suit, std::string rank) : suit(suit), rank(rank), drawn(false)
+Card::Card(std::string suit, std::string rank) : suit(suit), rank(rank), value(0), drawn(false)
+
 {
 	if (rank == "Ace") {
 		value = 11;
@@ -13,15 +14,13 @@ Card::Card(std::string suit, std::string rank) : suit(suit), rank(rank), drawn(f
 	}
 }
 
+Card::~Card() {}
+
 std::string Card::getSuit() const
 {
 	return suit;
 }
 
-int Card::getValue() const
-{
-	return value;
-}
 
 void Card::setValue(int value)
 {
@@ -31,6 +30,11 @@ void Card::setValue(int value)
 std::string Card::getRank() const
 {
 	return rank;
+}
+
+int Card::getValue()
+{
+	return 0;
 }
 
 bool Card::isFaceCard() const
