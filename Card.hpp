@@ -1,25 +1,27 @@
 #ifndef CARD_HPP
 #define CARD_HPP
 
-#include <iostream>
 #include <string>
 
 class Card
 {
 public:
-	Card(char suit, std::string rank);
-	char getSuit() const;
-	int getValue() const;
-	void setValue(int value);
+	Card(std::string suit, std::string rank);
+	~Card();
+
+	std::string getSuit() const;
 	std::string getRank() const;
+	int getValue();
 	bool isFaceCard() const;
 	bool isDrawn() const;
+
+	void setValue(int value);
 	void setDrawn(bool drawn);
 
 private:
-	char suit;
-	int value;
+	std::string suit;
 	std::string rank;
+	int value;
 	bool drawn;
 };
 
