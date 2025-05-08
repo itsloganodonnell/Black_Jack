@@ -7,6 +7,7 @@ class Card
 {
 public:
 	Card(std::string suit, std::string rank);
+
 	~Card();
 
 	std::string getSuit() const;

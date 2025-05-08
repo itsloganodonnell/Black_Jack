@@ -1,6 +1,7 @@
 #include "Card.hpp"
 
 Card::Card(std::string suit, std::string rank) : suit(suit), rank(rank), value(0), drawn(false)
+
 {
 	if (rank == "Ace") {
 		value = 11;
