@@ -12,7 +12,7 @@ public:
 
 	std::string getSuit() const;
 	std::string getRank() const;
-	int getValue();
+	int getValue() const;
 	bool isFaceCard() const;
 	bool isDrawn() const;
 
