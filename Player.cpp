@@ -14,7 +14,7 @@ int Player::getHandValue() const
 	int totalValue = 0;
 	int aceCount = 0;
 
-	for (const Card& card : playerHand) {
+	for (Card& card : playerHand) {
 		int value = card.getValue();
 		totalValue += value;
 
