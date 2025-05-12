@@ -1,25 +1,22 @@
 #include "Dealer.hpp"
-#include "Card.hpp"
+#include <stdexcept>
 
-Dealer::Dealer(std::vector<Card> deck) {}
-
-void Dealer::addCard(Card card)
-{
+void Dealer::addCard(Card card) {
     dealerHand.push_back(card);
 }
-int Dealer::getHandValue() const
-{
+
+int Dealer::getHandValue() const {
     int totalValue = 0;
     int aceCount = 0;
 
     for (const Card& card : dealerHand) {
-        int value = card.getValue();
-        totalValue += value;
-
+        totalValue += card.getValue();
         if (card.getRank() == "Ace") {
             aceCount++;
         }
     }
+
+    // Adjust for Aces
     while (totalValue > 21 && aceCount > 0) {
         totalValue -= 10;
         aceCount--;
@@ -29,8 +26,18 @@ int Dealer::getHandValue() const
 }
 
 Card Dealer::getCard(int index) const {
-    if (index >= 0 && index < dealerHand.size()) {
-        return dealerHand[index];  // Return the card at the given index
+    if (index >= 0 && index < static_cast<int>(dealerHand.size())) {
+        return dealerHand[index];
     }
-    throw std::out_of_range("Index out of range");
+    throw std::out_of_range("Dealer hand index out of range");
 }
+
+void Dealer::hit(Deck& deck) {
+    dealerHand.push_back(deck.drawCard());
+}
+
+void Dealer::resetHand() {
+    dealerHand.clear();
+}
+
+

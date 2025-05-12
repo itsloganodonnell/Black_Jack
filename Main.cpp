@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-// suit rank
+
 std::vector<Card> gameDeck = {
 	Card("Hearts", "2"),
 	Card("Spades", "2"),
@@ -61,116 +61,112 @@ std::vector<Card> gameDeck = {
 	Card("Clubs", "Ace"),
 };
 
-void playGame(bool freshGame) {
-	
-	if (freshGame) {
-		std::cout << "Welcome to Blackjack!" << std::endl;
-		Player player1(gameDeck);
-		Dealer dealer(gameDeck);
-		player1.resetChips();
-	}
-	else {
-		std::cout << "Welcome back to Blackjack!" << std::endl;
-	}
-	
-	std::cout << "Player's chips: " << player1.getChips() << std::endl;
-	player1.placeBet();
-	
-	player1.addCard(dealer.dealCard());
-	player1.addCard(dealer.dealCard());
-	dealer.addCard(dealer.dealCard());
-	dealer.addCard(dealer.dealCard());
-	
-	std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
-	std::cout << "Dealer's visible card: "
-		<< dealer.getCard(0).getRank() << " of " << dealer.getCard(0).getSuit() << std::endl;
-	std::cout << "Dealer has a card that is still hidden from you " << std::endl;
+Deck gameDeckObj(gameDeck);
 
-	std::cout << "Would you like to 'hit' or 'stand' or 'double down'?" << std::endl;
-	std::string choice;
-	std::cin >> choice;
+void playGame(bool freshGame, Player& player1, Dealer& dealer) {
+    if (freshGame) {
+        std::cout << "Welcome to Blackjack!" << std::endl;
+        player1.resetChips();
+    }
+    else {
+        std::cout << "Welcome back to Blackjack!" << std::endl;
+    }
 
-	std::string choice;
-	bool playerTurnOver = false;
-	while (!playerTurnOver && player1.getHandValue() <= 21) {
-		std::cout << "Would you like to 'hit', 'stand', or 'double down'? ";
-		std::cin >> choice;
+    std::cout << "Player's chips: " << player1.getChips() << std::endl;
+    player1.placeBet();
 
-		if (choice == "hit") {
-			player1.hit(dealer);
-			std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
-			if (player1.getHandValue() > 21) {
-				std::cout << "Player busts!\n";
-				player1.loseBet();
-				return;
-			}
-		}
-		else if (choice == "double down") {
-			player1.doubleDown(dealer);
-			std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
-			playerTurnOver = true; 
-		}
-		else if (choice == "stand") {
-			playerTurnOver = true;
-		}
-		else {
-			std::cout << "Invalid choice. Please try again.\n";
-		}
-	}
-	std::cout << "Dealer's total hand value is...\n";
-	dealer.getHandValue();  
+    player1.addCard(gameDeckObj.drawCard());
+    player1.addCard(gameDeckObj.drawCard());
+    dealer.addCard(gameDeckObj.drawCard());
+    dealer.addCard(gameDeckObj.drawCard());
 
-	while (dealer.getHandValue() < 17) {
-		dealer.hit(gameDeck);
-		std::cout << "Dealer hits. New value: " << dealer.getHandValue() << std::endl;
-	}
+    std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
+    std::cout << "Dealer's visible card: "
+        << dealer.getCard(0).getRank() << " of " << dealer.getCard(0).getSuit() << std::endl;
+    std::cout << "Dealer has a card that is still hidden from you." << std::endl;
 
-	if (dealer.getHandValue() > 21) {
-		std::cout << "Dealer busts! Player wins.\n";
-		player1.winBet();
-		return;
-	}
+    std::string choice;
+    bool playerTurnOver = false;
+    while (!playerTurnOver && player1.getHandValue() <= 21) {
+        std::cout << "Would you like to 'hit', 'stand', or 'double down'? ";
+        std::cin >> choice;
 
-	
-	int playerTotal = player1.getHandValue();
-	int dealerTotal = dealer.getHandValue();
+        if (choice == "hit") {
+            player1.addCard(gameDeckObj.drawCard());
+            std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
+            if (player1.getHandValue() > 21) {
+                std::cout << "Player busts!\n";
+                player1.loseBet();
+                return;
+            }
+        }
+        else if (choice == "double down") {
+            player1.doubleDown(gameDeckObj.drawCard());
+            std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
+            playerTurnOver = true;
+        }
+        else if (choice == "stand") {
+            playerTurnOver = true;
+        }
+        else {
+            std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
 
-	if (playerTotal > dealerTotal) {
-		std::cout << "Player wins! (" << playerTotal << " vs " << dealerTotal << ")\n";
-		player1.winBet();
-	}
-	else if (playerTotal < dealerTotal) {
-		std::cout << "Dealer wins. (" << dealerTotal << " vs " << playerTotal << ")\n";
-		player1.loseBet();
-	}
-	else {
-		std::cout << "Push (tie). Player gets bet back.\n";
-		player1.pushBet();
-	}
+    std::cout << "Dealer's turn...\n";
+    while (dealer.getHandValue() < 17) {
+        dealer.addCard(gameDeckObj.drawCard());
+        std::cout << "Dealer hits. New value: " << dealer.getHandValue() << std::endl;
+    }
 
-	std::cout << "Player's chips: " << player1.getChips() << std::endl;
+    int playerTotal = player1.getHandValue();
+    int dealerTotal = dealer.getHandValue();
+
+    if (dealerTotal > 21) {
+        std::cout << "Dealer busts! Player wins.\n";
+        player1.winBet();
+    }
+    else if (playerTotal > dealerTotal) {
+        std::cout << "Player wins! (" << playerTotal << " vs " << dealerTotal << ")\n";
+        player1.winBet();
+    }
+    else if (playerTotal < dealerTotal) {
+        std::cout << "Dealer wins. (" << dealerTotal << " vs " << playerTotal << ")\n";
+        player1.loseBet();
+    }
+    else {
+        std::cout << "Push (tie). Player gets bet back.\n";
+        player1.pushBet();
+    }
+
+    std::cout << "Player's chips: " << player1.getChips() << std::endl;
 }
 
 
-void playAnotherGame() {
-	std::string choice;
-	std::cout << "Would you like to play another game? (yes/no): ";
-	std::cin >> choice;
-	if (choice == "yes") {
-		playGame(false);
-	}
-	else if (choice == "no") {
-		std::cout << "Thank you for playing!" << std::endl;
-	}
-	else {
-		std::cout << "Invalid choice. Please enter 'yes' or 'no'." << std::endl;
-		playAnotherGame();
-	}
+void playAnotherGame(Player& player1, Dealer& dealer) {
+    std::string choice;
+    std::cout << "Would you like to play another game? (yes/no): ";
+    std::cin >> choice;
+    if (choice == "yes") {
+        playGame(false, player1, dealer);
+        playAnotherGame(player1, dealer);
+    }
+    else if (choice == "no") {
+        std::cout << "Thank you for playing!" << std::endl;
+    }
+    else {
+        std::cout << "Invalid choice. Please enter 'yes' or 'no'." << std::endl;
+        playAnotherGame(player1, dealer);
+    }
 }
+
 void playBlackjack() {
-	playGame(true);
-	playAnotherGame();
+    Player player1;
+    Dealer dealer;
+    playGame(true, player1, dealer);
+    playAnotherGame(player1, dealer);
 }
+
 int main() {
-	playBlackjack();
+    playBlackjack();
 }

@@ -7,14 +7,16 @@
 
 class Dealer {
 public:
-	Dealer(std::vector<Card> deck);
-	void addCard(Card card);
-	int getHandValue() const;
-	Card getCard(int index) const;
+    Dealer() = default;
 
+    void addCard(Card card);
+    int getHandValue() const;
+    Card getCard(int index) const;
+    void hit(Deck& deck);
+    void resetHand();
 
 private:
-	std::vector<Card> dealerHand;
+    std::vector<Card> dealerHand;
 };
 
 #endif

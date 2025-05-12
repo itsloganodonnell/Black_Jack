@@ -32,9 +32,8 @@ std::string Card::getRank() const
 	return rank;
 }
 
-int Card::getValue()
-{
-	return 0;
+int Card::getValue() const {
+	return value;
 }
 
 bool Card::isFaceCard() const
