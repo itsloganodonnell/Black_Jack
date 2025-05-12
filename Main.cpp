@@ -4,6 +4,7 @@
 #include "Dealer.hpp"
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 
 std::vector<Card> gameDeck = {
@@ -85,13 +86,13 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
         << dealer.getCard(0).getRank() << " of " << dealer.getCard(0).getSuit() << std::endl;
     std::cout << "Dealer has a card that is still hidden from you." << std::endl;
 
-    std::string choice;
+    char choice;
     bool playerTurnOver = false;
     while (!playerTurnOver && player1.getHandValue() <= 21) {
-        std::cout << "Would you like to 'hit', 'stand', or 'double down'? ";
+        std::cout << "Would you like to [H]it, [S]tand, or [D]ouble down? ";
         std::cin >> choice;
 
-        if (choice == "hit") {
+        if (choice == 'H' || choice == 'h') {
             player1.addCard(gameDeckObj.drawCard());
             std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
             if (player1.getHandValue() > 21) {
@@ -100,12 +101,12 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
                 return;
             }
         }
-        else if (choice == "double down") {
+        else if (choice == 'D' || choice == 'd') {
             player1.doubleDown(gameDeckObj.drawCard());
             std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
             playerTurnOver = true;
         }
-        else if (choice == "stand") {
+        else if (choice == 'S' || choice == 's') {
             playerTurnOver = true;
         }
         else {
@@ -144,14 +145,15 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
 
 
 void playAnotherGame(Player& player1, Dealer& dealer) {
-    std::string choice;
-    std::cout << "Would you like to play another game? (yes/no): ";
+    char choice;
+    std::cout << "Would you like to play another round? [Y]es or [N]o: ";
     std::cin >> choice;
-    if (choice == "yes") {
+    if (choice == 'Y' || choice == 'y') {
+        system("cls");
         playGame(false, player1, dealer);
         playAnotherGame(player1, dealer);
     }
-    else if (choice == "no") {
+    else if (choice == 'N' || choice == 'n') {
         std::cout << "Thank you for playing!" << std::endl;
     }
     else {
