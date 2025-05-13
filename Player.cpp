@@ -9,6 +9,26 @@ void Player::addCard(Card card)
 	playerHand.push_back(card);
 }
 
+Card Player::getCard(int i) {
+	if (i >= 0 && i < static_cast<int>(playerHand.size())) {
+		return playerHand[i];
+	}
+	throw std::out_of_range("Player hand index out of range");
+}
+
+int Player::getHandSize() {
+	return playerHand.size();
+}
+
+bool Player::hasBlackJack(Player player) {
+    if (player.getHandValue() == 21) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 int Player::getHandValue() const
 {
     int totalValue = 0;

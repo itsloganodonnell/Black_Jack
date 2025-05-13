@@ -64,6 +64,55 @@ std::vector<Card> gameDeck = {
 
 Deck gameDeckObj(gameDeck);
 
+void blackJackCheck(Player player, Dealer dealer) {
+	if (player.hasBlackJack(player)) {
+		std::cout << "Player has a Blackjack! Player wins!\n";
+		player.winBet();
+	}
+	else if (dealer.hasBlackJack(dealer)) {
+		std::cout << "Dealer has a Blackjack! Dealer wins!\n";
+		player.loseBet();
+	}
+	else if (player.getHandValue() == 21 && dealer.getHandValue() == 21) {
+		std::cout << "Both player and dealer have a Blackjack! It's a push!\n";
+		player.pushBet();
+	}
+}
+
+void bustCheck(Player player, Dealer dealer) {
+	if (player.getHandValue() > 21) {
+		std::cout << "Player busts! Dealer wins.\n";
+		player.loseBet();
+	}
+	else if (dealer.getHandValue() > 21) {
+		std::cout << "Dealer busts! Player wins.\n";
+		player.winBet();
+	}
+}
+
+void winCheck(Player player, Dealer dealer) {
+    if (dealer.getHandValue() > 21) {
+        std::cout << "Dealer busts! Player wins.\n";
+        player.winBet();
+	}
+	else if (player.getHandValue() == 21 && dealer.getHandValue() == 21) {
+		std::cout << "Both player and dealer have a Blackjack! It's a push!\n";
+		player.pushBet();
+	}
+    else if (player.getHandValue() > dealer.getHandValue() && player.getHandValue() < 21) {
+        std::cout << "Player wins! (" << player.getHandValue() << " vs " << dealer.getHandValue() << ")\n";
+        player.winBet();
+    }
+    else if (player.getHandValue() < dealer.getHandValue()) {
+        std::cout << "Dealer wins. (" << dealer.getHandValue() << " vs " << player.getHandValue() << ")\n";
+        player.loseBet();
+    }
+    else {
+        std::cout << "Push (tie). Player gets bet back.\n";
+        player.pushBet();
+    }
+}
+
 void playGame(bool freshGame, Player& player1, Dealer& dealer) {
     if (freshGame) {
         std::cout << "Welcome to Blackjack!" << std::endl;
@@ -81,7 +130,9 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
     dealer.addCard(gameDeckObj.drawCard());
     dealer.addCard(gameDeckObj.drawCard());
 
-    std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
+	blackJackCheck(player1, dealer);
+
+    std::cout << "Player's hand: " << player1.getCard(0).getRank() << " of " << player1.getCard(0).getSuit() << " and " << player1.getCard(1).getRank() << " of " << player1.getCard(1).getSuit() << "\nValue:" << player1.getHandValue() << std::endl;
     std::cout << "Dealer's visible card: "
         << dealer.getCard(0).getRank() << " of " << dealer.getCard(0).getSuit() << std::endl;
     std::cout << "Dealer has a card that is still hidden from you." << std::endl;
@@ -94,12 +145,8 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
 
         if (choice == 'H' || choice == 'h') {
             player1.addCard(gameDeckObj.drawCard());
-            std::cout << "Player's hand value: " << player1.getHandValue() << std::endl;
-            if (player1.getHandValue() > 21) {
-                std::cout << "Player busts!\n";
-                player1.loseBet();
-                return;
-            }
+            std::cout << "Player's new card: " << player1.getCard(player1.getHandSize() - 1).getRank() << " of " << player1.getCard(player1.getHandSize() - 1).getSuit() << "\nValue:" << player1.getHandValue() << std::endl;
+			bustCheck(player1, dealer);
         }
         else if (choice == 'D' || choice == 'd') {
             player1.doubleDown(gameDeckObj.drawCard());
@@ -115,30 +162,13 @@ void playGame(bool freshGame, Player& player1, Dealer& dealer) {
     }
 
     std::cout << "Dealer's turn...\n";
+
     while (dealer.getHandValue() < 17) {
         dealer.addCard(gameDeckObj.drawCard());
-        std::cout << "Dealer hits. New value: " << dealer.getHandValue() << std::endl;
+        std::cout << "Dealer hits.\nDealer's new card: " << dealer.getCard(dealer.getHandSize() - 1).getRank() << " of " << dealer.getCard(dealer.getHandSize() - 1).getSuit() << "\nNew hand value:" << dealer.getHandValue() << std::endl;
     }
 
-    int playerTotal = player1.getHandValue();
-    int dealerTotal = dealer.getHandValue();
-
-    if (dealerTotal > 21) {
-        std::cout << "Dealer busts! Player wins.\n";
-        player1.winBet();
-    }
-    else if (playerTotal > dealerTotal) {
-        std::cout << "Player wins! (" << playerTotal << " vs " << dealerTotal << ")\n";
-        player1.winBet();
-    }
-    else if (playerTotal < dealerTotal) {
-        std::cout << "Dealer wins. (" << dealerTotal << " vs " << playerTotal << ")\n";
-        player1.loseBet();
-    }
-    else {
-        std::cout << "Push (tie). Player gets bet back.\n";
-        player1.pushBet();
-    }
+    winCheck(player1, dealer);
 
     std::cout << "Player's chips: " << player1.getChips() << std::endl;
 }

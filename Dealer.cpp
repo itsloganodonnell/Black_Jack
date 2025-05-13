@@ -25,7 +25,20 @@ int Dealer::getHandValue() const {
     return totalValue;
 }
 
-Card Dealer::getCard(int index) const {
+bool Dealer::hasBlackJack(Dealer dealer) {
+    if (dealer.getHandValue() == 21) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+int Dealer::getHandSize() {
+	return dealerHand.size();
+}
+
+Card Dealer::getCard(int index) {
     if (index >= 0 && index < static_cast<int>(dealerHand.size())) {
         return dealerHand[index];
     }

@@ -15,10 +15,14 @@ public:
     void addCard(Card card);
     int getHandValue() const;
     int getChips() const;
+    Card getCard(int i);
+    int getHandSize();
 
     void resetChips() {
         chips = 1000;
     }
+
+    bool hasBlackJack(Player player);
 
     void placeBet() {
         int amount = 0;
