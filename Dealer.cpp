@@ -49,7 +49,7 @@ void Dealer::hit(Deck& deck) {
     dealerHand.push_back(deck.drawCard());
 }
 
-void Dealer::resetHand() {
+void Dealer::clearHand() {
     dealerHand.clear();
 }
 

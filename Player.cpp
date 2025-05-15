@@ -75,6 +75,10 @@ void Player::doubleDown(Card card) {
 	std::cout << "Player doubles down! New hand value: " << getHandValue() << std::endl;
 }
 
+void Player::clearHand() {
+	playerHand.clear();
+}
+
 Player::~Player() {
 	
 }
