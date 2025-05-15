@@ -15,10 +15,15 @@ public:
     void addCard(Card card);
     int getHandValue() const;
     int getChips() const;
+    Card getCard(int i);
+    int getHandSize();
+    void clearHand();
 
     void resetChips() {
         chips = 1000;
     }
+
+    bool hasBlackJack(Player player);
 
     void placeBet() {
         int amount = 0;
@@ -36,6 +41,12 @@ public:
 
     void hit(Deck& deck);
     void doubleDown(Card card);
+
+	void blackJackBet() {
+		chips += bet * 2.5;
+		std::cout << "Blackjack! Your new chip total is: " << chips << std::endl;
+		bet = 0;
+	}
 
     void winBet() {
         chips += bet * 2;

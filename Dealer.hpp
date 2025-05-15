@@ -11,9 +11,11 @@ public:
 
     void addCard(Card card);
     int getHandValue() const;
-    Card getCard(int index) const;
+    Card getCard(int index);
     void hit(Deck& deck);
-    void resetHand();
+    void clearHand();
+    bool hasBlackJack(Dealer dealer);
+    int getHandSize();
 
 private:
     std::vector<Card> dealerHand;

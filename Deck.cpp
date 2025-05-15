@@ -15,8 +15,11 @@ Card Deck::drawCard() {
 		std::uniform_int_distribution<> dist(0, 51);
 
 		if (cards.at(dist(gen)).isDrawn() == false) {
-			return cards.at(dist(gen));
+			Card drawnCard = cards.at(dist(gen));
+			drawnCard.setDrawn(true);
+			return drawnCard;
 		}
+		
 	}
 }
 
