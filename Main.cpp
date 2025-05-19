@@ -88,15 +88,24 @@ void winCheck(Player& player, Dealer& dealer) {
 void playGame(bool freshGame, Player& player1, Dealer& dealer) {
     player1.clearHand();
     dealer.clearHand();
+// Move counter outside the function to persist across rounds
+static int counter = 0;
 
-    if (freshGame) {
-        std::cout << "Welcome to Blackjack!" << std::endl;
-        player1.resetChips();
-        gameDeckObj.shuffle();
-    }
-    else {
-        std::cout << "Welcome back to Blackjack!" << std::endl;
-    }
+if (freshGame) {
+    std::cout << "Welcome to Blackjack!" << std::endl;
+    player1.resetChips();
+    gameDeckObj.shuffle();
+    counter = 0;
+} else {
+    std::cout << "Welcome back to Blackjack!" << std::endl;
+}
+
+counter++;
+
+if (counter == 5) {
+    gameDeckObj.shuffle();
+    counter = 0;
+}
 
     std::cout << "Player's chips: " << player1.getChips() << std::endl;
     player1.placeBet();

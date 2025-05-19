@@ -65,14 +65,17 @@ void Player::hit(Deck& deck)
 
 
 void Player::doubleDown(Card card) {
-	// Double the bet
+    // Double the bet
 	bet *= 2;
-
 	// Add the card to the player's hand
 	addCard(card);
 
 	// Print the updated hand value
-	std::cout << "Player doubles down! New hand value: " << getHandValue() << std::endl;
+	std::cout << "Player doubles down!" << std::endl;
+
+    std::cout << "Player's new card: "
+        << this->getCard(this->getHandSize() - 1).getRank() << " of "
+        << this->getCard(this->getHandSize() - 1).getSuit() << std::endl;
 }
 
 void Player::clearHand() {
@@ -80,5 +83,4 @@ void Player::clearHand() {
 }
 
 Player::~Player() {
-	
 }

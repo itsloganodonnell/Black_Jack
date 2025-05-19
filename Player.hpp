@@ -35,7 +35,6 @@ public:
         }
         else {
             bet = amount;
-            chips -= amount; 
         }
     }
 
@@ -43,24 +42,24 @@ public:
     void doubleDown(Card card);
 
 	void blackJackBet() {
-		chips += bet * 2.5;
-		std::cout << "Blackjack! Your new chip total is: " << chips << std::endl;
+		chips += bet + (bet/2);
+		std::cout << "Your new chip total is: " << chips << std::endl;
 		bet = 0;
 	}
 
     void winBet() {
-        chips += bet * 2;
-        std::cout << "You win! Your new chip total is: " << chips << std::endl;
+        chips += bet;
+        std::cout << "Your new chip total is: " << chips << std::endl;
         bet = 0;
     }
 
     void loseBet() {
+        chips -= bet;
         std::cout << "You lose! Your new chip total is: " << chips << std::endl;
         bet = 0;
     }
 
-    void pushBet() {
-        chips += bet; 
+    void pushBet() { 
         std::cout << "Push! Your bet is returned. Your chip total is: " << chips << std::endl;
         bet = 0;
     }
